@@ -41,6 +41,18 @@ prompt_pure_git_dirty() {
 	(($? == 1)) && echo '⚐'
 }
 
+# check if we have a git stash, and if so, print how deep it is
+prompt_pure_git_stash() {
+	# check if we're in a git repo
+	command git rev-parse --is-inside-work-tree &>/dev/null || return
+	stash_depth=$(command git stash list|wc -l|sed 's, ,,g')
+	(( $stash_depth > 0 )) || return
+
+   # print the stash depth in an “COMBINING ENCLOSING KEYCAP” (U+20E3)
+	echo "${stash_depth}\u20e3"
+}
+
+
 # displays the exec time of the last command if set threshold was exceeded
 prompt_pure_cmd_exec_time() {
 	local stop=$(date +%s)
@@ -70,7 +82,7 @@ prompt_pure_precmd() {
 	# git info
 	vcs_info
 
-	local prompt_pure_preprompt='\n%F{blue}%~%F{242}$vcs_info_msg_0_`prompt_pure_git_dirty` $prompt_pure_username%f %F{yellow}`prompt_pure_cmd_exec_time`%f'
+	local prompt_pure_preprompt='\n%F{blue}%~%F{242}$vcs_info_msg_0_`prompt_pure_git_dirty``prompt_pure_git_stash` $prompt_pure_username%f %F{yellow}`prompt_pure_cmd_exec_time`%f'
 	print -P $prompt_pure_preprompt
 
 	# check async if there is anything to pull
