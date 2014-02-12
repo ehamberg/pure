@@ -38,7 +38,7 @@ prompt_pure_git_dirty() {
 	# check if it's dirty
 	command git diff --quiet --ignore-submodules HEAD &>/dev/null
 
-	(($? == 1)) && echo '*'
+	(($? == 1)) && echo '⚐'
 }
 
 # displays the exec time of the last command if set threshold was exceeded
