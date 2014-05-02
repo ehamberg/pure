@@ -55,14 +55,14 @@ prompt_pure_git_stash() {
 
 # displays the exec time of the last command if set threshold was exceeded
 prompt_pure_cmd_exec_time() {
-	local stop=$(date +%s)
+	local stop=$EPOCHSECONDS
 	local start=${cmd_timestamp:-$stop}
 	integer elapsed=$stop-$start
 	(($elapsed > ${PURE_CMD_MAX_EXEC_TIME:=5})) && prompt_pure_human_time $elapsed
 }
 
 prompt_pure_preexec() {
-	cmd_timestamp=$(date +%s)
+	cmd_timestamp=$EPOCHSECONDS
 
 	# shows the current dir and executed command in the title when a process is active
 	print -Pn "\e]0;"
@@ -110,6 +110,7 @@ prompt_pure_setup() {
 
 	prompt_opts=(cr subst percent)
 
+	zmodload zsh/datetime
 	autoload -Uz add-zsh-hook
 	autoload -Uz vcs_info
 
