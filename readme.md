@@ -11,19 +11,20 @@ Most prompts are cluttered, ugly and slow. I wanted something visually pleasing 
 
 ### Why?
 
-- Comes with the perfect prompt character. Author went through the whole Unicode range to find it.
-- Shows `git` branch and whether it's dirty (with a `*`) using the [fastest](https://gist.github.com/3898739) method available.
+- Comes with the perfect prompt character.
+  Author went through the whole Unicode range to find it.
+- Shows `git` branch and whether it's dirty (with a `⚐`).
 - Indicates when you have unpushed/unpulled `git` commits with up/down arrows.
 - Prompt character turns red if the last command didn't exit with `0`.
 - Command execution time will be displayed if it exceeds the set threshold.
 - Username and host only displayed when in an SSH session.
-- Shows the current path in the title and the [current directory and command](screenshot-title-cmd.png) when a process is running.
+- Shows the current path in the title and the [current folder & command](screenshot-title-cmd.png) when a process is running.
 - Makes an excellent starting point for your own custom prompt.
 
 
 ## Install
 
-Can be installed with `npm` or manually.
+Can be installed with `npm` or manually. Requires git 2.0.0+ and ZSH 5.0.0+.
 
 ### npm
 
@@ -84,6 +85,10 @@ The max execution time of a process before its run time is shown when it exits. 
 
 Set `PURE_GIT_PULL=0` to prevent Pure from checking whether the current Git remote has been updated.
 
+### `PURE_GIT_UNTRACKED_DIRTY`
+
+Set `PURE_GIT_UNTRACKED_DIRTY=0` to not include untracked files in dirtiness check. Only really useful on extremely huge repos like the WebKit repo.
+
 ## Example
 
 ```sh
@@ -122,4 +127,4 @@ Add `antigen bundle sindresorhus/pure` to your .zshrc file (do not use the `anti
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT) © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](http://sindresorhus.com)

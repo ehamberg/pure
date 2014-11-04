@@ -36,9 +36,10 @@ prompt_pure_git_dirty() {
 	# check if we're in a git repo
 	command git rev-parse --is-inside-work-tree &>/dev/null || return
 	# check if it's dirty
-	command git diff --quiet --ignore-submodules HEAD &>/dev/null
+	[[ "$PURE_GIT_UNTRACKED_DIRTY" == 0 ]] && local umode="-uno" || local umode="-unormal"
+	command test -n "$(git status --porcelain --ignore-submodules ${umode})"
 
-	(($? == 1)) && echo '⚐'
+	(($? == 0)) && echo '⚐'
 }
 
 # check if we have a git stash, and if so, print how deep it is
@@ -89,6 +90,8 @@ prompt_pure_precmd() {
 	(( ${PURE_GIT_PULL:-1} )) && {
 		# check if we're in a git repo
 		command git rev-parse --is-inside-work-tree &>/dev/null &&
+		# make sure working tree is not $HOME
+		[[ "$(command git rev-parse --show-toplevel)" != "$HOME" ]] &&
 		# check check if there is anything to pull
 		command git fetch &>/dev/null &&
 		# check if there is an upstream configured for this branch
